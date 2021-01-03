@@ -36,7 +36,7 @@ export default class CreateActivite extends React.Component{
     }
     askPermission = async () => {
         if (Platform.OS !== 'web') {
-            const { status } = await ImagePicker.requestCameraRollPermissionsAsync();
+            const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
             if (status !== 'granted') {
                 ToastAndroid.show('Sorry, we need camera roll permissions to make this work!', ToastAndroid.SHORT);
             }
