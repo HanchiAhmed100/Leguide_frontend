@@ -1,0 +1,10 @@
+{
+  "devToolsPort": 19002,
+  "expoServerPort": 19000,
+  "packagerPort": 19000,
+  "packagerPid": null,
+  "expoServerNgrokUrl": "https://p7-bbz.anonymous.leguide.exp.direct",
+  "packagerNgrokUrl": "https://packager.p7-bbz.anonymous.leguide.exp.direct",
+  "ngrokPid": 12492,
+  "webpackServerPort": null
+}
