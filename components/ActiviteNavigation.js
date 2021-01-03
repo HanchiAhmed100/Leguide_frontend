@@ -19,15 +19,25 @@ export default class ActiviteNavigation extends React.Component{
         activite_info : []
     }
 
+    _isMounted = false;
+
+    componentWillUnmount() {
+        this._isMounted = false;
+    }
+
     componentDidMount = async () => {
-        this.setState({act_id : this.props.route.params.activite_id , activite_info : this.props.route.params.activite})
-        this.setState({loading : true})
-        await Axios.get(`http://192.168.1.9:8080/posts/activite/${this.props.route.params.activite_id}`).then( res =>{
-            this.setState({Posts : res.data})
-        }).catch(err =>{
-            console.error(err)
-        })
-        this.setState({loading : false})
+        this._isMounted = true;
+        if(this._isMounted){
+            this.setState({act_id : this.props.route.params.activite_id , activite_info : this.props.route.params.activite})
+            this.setState({loading : true})
+            await Axios.get(`http://192.168.1.9:8080/posts/activite/${this.props.route.params.activite_id}`).then( res =>{
+                this.setState({Posts : res.data})
+            }).catch(err =>{
+                console.error(err)
+            })
+            this.setState({loading : false})
+        }
+
     }
 
     render(){

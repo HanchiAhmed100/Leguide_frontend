@@ -52,15 +52,18 @@ export default class Journal extends React.Component{
 
 
     loadPosts = async () => {
-        this.setState({loading : true})
-        await Axios.get(`http://192.168.1.9:8080/posts/activite/${this.props.activite_id}`).then( res =>{
-            if (this._isMounted) {    
-                this.setState({Posts : res.data})
-            }
-        }).catch(err =>{
-            console.error(err)
-        })
-        this.setState({loading : false})
+        if (this._isMounted) {
+            this.setState({loading : true})
+            
+            await Axios.get(`http://192.168.1.9:8080/posts/activite/${this.props.activite_id}`).then( res =>{
+                
+                    this.setState({Posts : res.data})
+                
+            }).catch(err =>{
+                console.error(err)
+            })
+            this.setState({loading : false})
+        }
     }
 
     getLogin = async () =>{
