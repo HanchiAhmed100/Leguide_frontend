@@ -7,21 +7,23 @@ import Constants from 'expo-constants';
 
 
 export default class Login extends React.Component {
-    
-    state = {
-        user_id : null,
-        user_name : "",
-        activites : [],
-        loading : false,
-        refreshing : false,
+    constructor(props){ 
+        super(props)
+        this.state = {
+            user_id : null,
+            user_name : "",
+            activites : [],
+            loading : false,
+            refreshing : false,
+        }
     }
+    _isMounted = false;
 
     componentDidMount(){
         this._isMounted = true;
         this.getLogin()
         this.getActivites()
     }
-    _isMounted = false;
 
     componentWillUnmount() {
         this._isMounted = false;
@@ -42,16 +44,18 @@ export default class Login extends React.Component {
     }
 
     getActivites = async () =>{
-        this.setState({loading : true})
-        await Axios.get("http://192.168.1.9:8080/activites").then(res =>{
-            if (this._isMounted) {    
-                this.setState({activites : res.data})
-            }
-        })
-        .catch(err =>{
-            console.error(err)
-        })
-        this.setState({loading : false })
+        if(this._isMounted){
+            this.setState({loading : true})
+            await Axios.get("http://192.168.1.9:8080/activites").then(res =>{
+                if (this._isMounted) {    
+                    this.setState({activites : res.data})
+                }
+            })
+            .catch(err =>{
+                console.error(err)
+            })
+            this.setState({loading : false })
+        }
     }
     GetActivite = (activite_id,activite) =>{
         console.log(activite.users)

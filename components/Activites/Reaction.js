@@ -11,15 +11,25 @@ import 'moment/locale/fr';
 
 
 export default class Reaction extends React.Component{
-    state = {
-        loading : false,
-        Reactions : [],
-        reation : ''
+    constructor(props){
+        super(props)
+        this.state = {
+            loading : false,
+            Reactions : [],
+            reation : ''
+        }
+    }
+    _isMounted = false;
+
+    componentWillUnmount() {
+        this._isMounted = false;
     }
 
     componentDidMount(){
+        this._isMounted = true
         this.loadReaction()
         this.getLogin()
+
     }
 
     getLogin = async () =>{
@@ -31,22 +41,24 @@ export default class Reaction extends React.Component{
         })
     }
     loadReaction = async () =>{
-        this.setState({loading : true})
-        await Axios.get(`http://192.168.1.9:8080/reaction/${this.props.route.params.post_id}`).then(res =>{
-            this.setState({Reactions : res.data ,loading : false})
-            var reaction_array = res.data
+        if(this._isMounted){
+            this.setState({loading : true})
+            await Axios.get(`http://192.168.1.9:8080/reaction/${this.props.route.params.post_id}`).then(res =>{
+                this.setState({Reactions : res.data ,loading : false})
+                var reaction_array = res.data
 
-            for(let i = 0 ; i< reaction_array.length ; i++){
-                if(reaction_array[i].user.user_id == this.state.user_id){
-                    console.log(reaction_array[i])
-                    this.setState({reation : reaction_array[i].reaction_type})
-                }else{
-                    console.log("non")
+                for(let i = 0 ; i< reaction_array.length ; i++){
+                    if(reaction_array[i].user.user_id == this.state.user_id){
+                        console.log(reaction_array[i])
+                        this.setState({reation : reaction_array[i].reaction_type})
+                    }else{
+                        console.log("non")
+                    }
                 }
-            }
-        }).catch(err =>{
-            console.error(err)
-        })
+            }).catch(err =>{
+                console.error(err)
+            })
+        }
     }
     addReaction = async (type) =>{
         this.setState({loading : true})

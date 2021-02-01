@@ -10,26 +10,31 @@ import 'moment/locale/fr';
 
 
 export default class Journal extends React.Component{
-    state = {
-        user_id : '',
-        user_name : '',
-        msg : '',
-        loading : false,
-        Posts : [],
-        refreshing : false,
-        abonnement : true,
-        info : []
+    
+    constructor(props){
+        super(props)
+        this.state = {
+            user_id : '',
+            user_name : '',
+            msg : '',
+            loading : false,
+            Posts : [],
+            refreshing : false,
+            abonnement : true,
+            info : []
+        }
     }
+
     _isMounted = false;
 
     componentWillUnmount() {
         this._isMounted = false;
     }
-    componentDidMount(){
-        this.getLogin()
+    async componentDidMount(){
         this._isMounted = true;
+        this.getLogin()
         this.setState({Posts : this.props.Posts,info:this.props.Activite_info})
-        this.AfficheAbonnement()
+        await this.AfficheAbonnement()
     }
 
     AfficheAbonnement = () =>{
@@ -67,12 +72,14 @@ export default class Journal extends React.Component{
     }
 
     getLogin = async () =>{
-        const user = await SecureStore.getItemAsync("User")
+        if (this._isMounted) {
+            const user = await SecureStore.getItemAsync("User")
             const user_json = JSON.parse(user)
             this.setState({
                 user_id : user_json.user_id,
                 user_name : user_json.nom+" "+user_json.prenom
             })
+        }
     }
 
 

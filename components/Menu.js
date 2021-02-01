@@ -69,9 +69,9 @@ export default class Menu extends React.Component {
                             <Text style={{fontSize : 18}} > <Feather name="activity" size={24} color="black" />       Activites </Text>
                         </TouchableOpacity>
                     </View>
-                    <View style={{ margin: 10, padding : 15 ,borderBottomWidth : 1 , borderBottomColor : '#ccc',backgroundColor : '#fcfcfc' }}>
+                    {/* <View style={{ margin: 10, padding : 15 ,borderBottomWidth : 1 , borderBottomColor : '#ccc',backgroundColor : '#fcfcfc' }}>
                         <Text style={{fontSize : 18}} > <MaterialIcons name="event-available" size={24} color="black" />       Evenements </Text>
-                    </View>
+                    </View> */}
                     <View style={{margin : 10 , padding : 15 ,borderBottomWidth : 1 , borderBottomColor : '#ccc'}}>
                         <TouchableOpacity onPress={() => this.props.navigation.navigate("Amis")}>
                             <Text style={{fontSize : 18}} > <AntDesign name="addusergroup" size={24} color='#3f3d56' />       Amis </Text>

@@ -10,19 +10,27 @@ import Axios from 'axios';
 
 
 export default class Chat extends React.Component{
-    state = {
-        user_id : '',
-        msg : []
+    constructor(props){
+        super(props)
+        this.state = {
+            user_id : '',
+            msg : []
+        }
+    }
+    _isMounted = false;
+
+    componentWillUnmount() {
+        this._isMounted = false;
     }
 
+
     async componentDidMount(){
-        await this.getLogin();
-        
-        this.setState({loading : true})
-        await this.getMsg();
-        this.setState({loading : false})
-
-
+        if(this._isMounted){
+            this.setState({loading : true})
+            await this.getLogin();
+            await this.getMsg();
+            this.setState({loading : false})
+        }
     }
 
     getLogin = async () =>{

@@ -11,18 +11,27 @@ import 'moment/locale/fr';
 
 
 export default class Commentaire extends React.Component{
-    state = {
-        loading : false,
-        post_id : '',
-        Comments : [],
-        Post_body : '',
-        createur : [],
-        date : '',
-        user_id : '',
-        comment_body : ''
+    constructor(props){
+        super(props)
+        this.state = {
+            loading : false,
+            post_id : '',
+            Comments : [],
+            Post_body : '',
+            createur : [],
+            date : '',
+            user_id : '',
+            comment_body : ''
+        }
+    }
+    _isMounted = false;
+
+    componentWillUnmount() {
+        this._isMounted = false;
     }
 
     componentDidMount(){
+        this._isMounted = true;
         this.loadPostAndComments()
         this.getLogin()
     }
@@ -35,12 +44,15 @@ export default class Commentaire extends React.Component{
         })
     }
     loadPostAndComments = async () =>{
-        this.setState({loading : true})
-        await Axios.get(`http://192.168.1.9:8080/posts/${this.props.route.params.post_id}`).then(res =>{
-            this.setState({Comments : res.data.commentaires ,Post_body : res.data.body,date : res.data.creationDateTime , createur : res.data.createur, loading : false})
-        }).catch(err =>{
-            console.error(err)
-        })
+        if(this._isMounted){
+            this.setState({loading : true})
+            await Axios.get(`http://192.168.1.9:8080/posts/${this.props.route.params.post_id}`).then(res =>{
+                this.setState({Comments : res.data.commentaires ,Post_body : res.data.body,date : res.data.creationDateTime , createur : res.data.createur, loading : false})
+            }).catch(err =>{
+                console.error(err)
+            })
+        }
+
     }
     addComents = async () =>{
         this.setState({loading : true})

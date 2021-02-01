@@ -9,6 +9,9 @@ import CreateActivite from './Activites/CreateActivite.js';
 import TabNavigation from './TabNavigation.js';
 import ActiviteNavigation from './ActiviteNavigation.js';
 
+
+import AddMap from './Activites/AddMap.js';
+
 import AddProfilePicture from './User/AddProfilePicture.js';
 
 
@@ -71,11 +74,12 @@ export default class MenuNavigation extends React.Component{
                         <Stack.Screen name="ActiviteNavigation" component={ActiviteNavigation} options={{headerTitle : 'Le Guide' ,headerLeft : null}} />
                         <Stack.Screen name="CreateActivite" component={CreateActivite} options={{headerShown : false}} />
                         <Stack.Screen name="SetActiviteCover" component={SetActiviteCover} options={{headerShown : false}} />
-                        <Stack.Screen name="AddProfilePicture" component={AddProfilePicture} />
+                        <Stack.Screen name="AddProfilePicture" component={AddProfilePicture} options={{headerTitle : 'Photo de Profile' ,headerLeft : null}} />
                         <Stack.Screen name="Commentaire" component={Commentaire} />
                         <Stack.Screen name="Reaction" component={Reaction} />
                         <Stack.Screen name="Amis" component={Amis} />
                         <Stack.Screen name="Chat" component={Chat} />
+                        <Stack.Screen name="AddMap" component={AddMap} />
 
                         <Stack.Screen name="Profile" options={{headerShown : false}} >
                             {props => <Profile {...props} user={"hhhh"} />}

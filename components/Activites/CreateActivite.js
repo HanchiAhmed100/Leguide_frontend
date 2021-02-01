@@ -6,6 +6,7 @@ import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
 import {Picker} from '@react-native-picker/picker';
 
+import AddMap from './AddMap.js'
 
 
 export default class CreateActivite extends React.Component{
@@ -20,7 +21,8 @@ export default class CreateActivite extends React.Component{
         showModal : false,
         image_uri : null,
         image : false,
-        activite_id : ''
+        activite_id : '',
+        mapModal : false,
     }
     componentDidMount(){
         this.getLogin()
@@ -98,7 +100,8 @@ export default class CreateActivite extends React.Component{
             }
         }).then(res =>{
             console.log(res.data)
-            this.props.navigation.navigate("Home")
+            this.setState({showModal : false , mapModal : true})
+
         }).catch(err=>{     
             console.error(err)
         })
@@ -166,6 +169,17 @@ export default class CreateActivite extends React.Component{
                     </Modal>
 
 
+                    <Modal
+                        animationType="slide"
+                        transparent={true}
+                        visible={this.state.mapModal}
+                        onRequestClose={() => {
+                        Alert.alert('Modal has been closed.');
+                        }}>
+                        <View style={styles.allview}>
+                            <AddMap activite_id={this.state.activite_id}/>
+                        </View>
+                    </Modal>
 
 
                     <StatusBar style="auto" />
@@ -212,6 +226,13 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       alignItems: 'center',
       marginTop: 22,
+    },
+    allview:{
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 1,
+        
     },
     modalView: {
       margin: 20,
