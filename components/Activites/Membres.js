@@ -56,18 +56,18 @@ export default class Reaction extends React.Component{
                                 }}
                             >
                                 <View style={{borderBottomWidth : 1 , borderBottomColor : '#ccc'}}>
-                                    <Text style={{ fontSize: 16 ,padding : 10 ,textTransform : 'capitalize'}}> {this.props.Activite_info.nom}     </Text>
+                                    <Text style={{ fontSize: 16 ,padding : 10 ,textTransform : 'capitalize'}}> {this.props.route.params.Activite_info.nom}     </Text>
 
                                 </View>
 
                                 <View style={{ flexDirection:"row", height : 60 ,paddingTop : 8   }}> 
                                     <View style={{width : mywidht - 50}}>
-                                        <Image  source={{uri : "http://192.168.1.9:8080/uploads/images/profile/"+this.props.Activite_info.admin.profile }} style={{width: 60  ,resizeMode : 'cover', height:60 , borderRadius:50  }} />
-                                        <Text style={{ fontSize: 18 , marginVertical : -55 , marginLeft : 60 ,textTransform :'capitalize' }}>   {this.props.Activite_info.admin.nom}  {this.props.Activite_info.admin.prenom}</Text>
+                                        <Image  source={{uri : "http://192.168.1.9:8080/uploads/images/profile/"+this.props.route.params.Activite_info.admin.profile }} style={{width: 60  ,resizeMode : 'cover', height:60 , borderRadius:50  }} />
+                                        <Text style={{ fontSize: 18 , marginVertical : -55 , marginLeft : 60 ,textTransform :'capitalize' }}>   {this.props.route.params.Activite_info.admin.nom}  {this.props.route.params.Activite_info.admin.prenom}</Text>
                                         <Text style={{ fontSize: 12 , marginVertical : 58 , marginLeft : 65 }}>   Administrateur de l'activite</Text>
                                     </View>
                                     <View>
-                                        <TouchableOpacity onPress={()=> this.props.navigation.navigate('Profile',{user_id : this.props.Activite_info.admin.user_id})}>
+                                        <TouchableOpacity onPress={()=> this.props.navigation.navigate('Profile',{user_id : this.props.route.params.Activite_info.admin.user_id})}>
                                             <AntDesign name="arrowright" style={{marginVertical : 20}} size={24} color="black" />
                                         </TouchableOpacity>
                                     </View>
@@ -77,7 +77,7 @@ export default class Reaction extends React.Component{
                         </View>
 
                     </>}
-                    data={this.props.Activite_info.users}
+                    data={this.props.route.params.Activite_info.users}
                     keyExtractor={item => item.user_id.toString()}
 
                     renderItem={({ item }) => (

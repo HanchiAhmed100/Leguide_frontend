@@ -5,6 +5,7 @@ import Axios from 'axios';
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
 import {Picker} from '@react-native-picker/picker';
+import { WebView } from 'react-native-webview';
 
 import AddMap from './AddMap.js'
 
@@ -177,7 +178,15 @@ export default class CreateActivite extends React.Component{
                         Alert.alert('Modal has been closed.');
                         }}>
                         <View style={styles.allview}>
-                            <AddMap activite_id={this.state.activite_id}/>
+
+                            <View style={{backgroundColor : '#fff' , flex :1}}>
+                                <Text style={{alignItems: 'center',color :'#111' , fontSize :18 ,lineHeight : 30 , marginTop : 15,marginBottom :15,justifyContent: 'center' }}>Taper deux fois pour marquer  les localisation de votre activite</Text>
+                                                        <TouchableHighlight style={{ width : 110 , height : 40 , alignItems :"center",  borderRadius: 6 , backgroundColor : '#fff', borderWidth : 2 , borderColor : '#3f3d56' , padding : 3 , marginTop : 20,marginLeft : 6}}>
+                                                        <Text style={{color: '#3f3d56' , fontSize : 16, marginVertical : 5 }} onPress={() =>this.props.navigation.navigate('Home')} >Terminer</Text>
+                                                    </TouchableHighlight>
+                                <WebView source={{ uri: `http://192.168.1.9:80/LeGuideMap/addPlace.html?activite_id=${this.state.activite_id}` }} style={{ marginTop: 20 }} />
+                            </View>
+
                         </View>
                     </Modal>
 
@@ -231,7 +240,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 1,
+        marginTop: 50,
         
     },
     modalView: {

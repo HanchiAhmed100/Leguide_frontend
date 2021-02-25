@@ -66,7 +66,7 @@ export default class Login extends React.Component {
             }           
         }
         console.log(x)
-        this.props.navigation.navigate('ActiviteNavigation',{activite_id : activite_id ,activite : activite , abonnement : x})
+        this.props.navigation.navigate('Journal',{activite_id : activite_id ,Activite_info : activite , abonnement : x})
 
     }
     _handleRefresh =  () =>{

@@ -9,6 +9,11 @@ import CreateActivite from './Activites/CreateActivite.js';
 import TabNavigation from './TabNavigation.js';
 import ActiviteNavigation from './ActiviteNavigation.js';
 
+import Guide from './Activites/Guide.js'
+import Journal from './Activites/Journal.js'
+import Membres from './Activites/Membres.js'
+
+
 
 import AddMap from './Activites/AddMap.js';
 
@@ -59,10 +64,9 @@ export default class MenuNavigation extends React.Component{
         this.setState({user : false})
     }
 
-
     render(){
         return(
-            <NavigationContainer independent={true} >
+            <NavigationContainer  >
 
                 { this.state.user ? (
                     <Stack.Navigator initialRouteName="TabNavigation">
@@ -70,20 +74,32 @@ export default class MenuNavigation extends React.Component{
                         <Stack.Screen name="TabNavigation" options={{headerTitle : 'Le Guide' ,headerLeft : null}}>
                             {props => <TabNavigation {...props} SetUserFalse={this.SetUserFalse} />}
                         </Stack.Screen>
-                       
-                        <Stack.Screen name="ActiviteNavigation" component={ActiviteNavigation} options={{headerTitle : 'Le Guide' ,headerLeft : null}} />
-                        <Stack.Screen name="CreateActivite" component={CreateActivite} options={{headerShown : false}} />
+                      
+                        <Stack.Screen name="ActiviteNavigation" options={{headerTitle : 'Le Guide'}}>
+                            {props => <ActiviteNavigation {...props} />}
+                        </Stack.Screen>                       
+
+                        <Stack.Screen name="CreateActivite" component={CreateActivite} options={{headerTitle : "Nouvelle activité"}} />
                         <Stack.Screen name="SetActiviteCover" component={SetActiviteCover} options={{headerShown : false}} />
                         <Stack.Screen name="AddProfilePicture" component={AddProfilePicture} options={{headerTitle : 'Photo de Profile' ,headerLeft : null}} />
                         <Stack.Screen name="Commentaire" component={Commentaire} />
                         <Stack.Screen name="Reaction" component={Reaction} />
                         <Stack.Screen name="Amis" component={Amis} />
                         <Stack.Screen name="Chat" component={Chat} />
-                        <Stack.Screen name="AddMap" component={AddMap} />
+                        <Stack.Screen name="AddMap" component={AddMap} options={{headerTitle : 'Activite localisation' ,headerLeft : null}}/>
+
+
+                        <Stack.Screen name="Journal" component={Journal} />
+                        <Stack.Screen name="Membres" component={Membres} />
+                        <Stack.Screen name="Guide" component={Guide} />
 
                         <Stack.Screen name="Profile" options={{headerShown : false}} >
                             {props => <Profile {...props} user={"hhhh"} />}
                         </Stack.Screen>
+
+
+
+
 
                     </Stack.Navigator>
                     ) : (

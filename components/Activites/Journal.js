@@ -33,17 +33,18 @@ export default class Journal extends React.Component{
     async componentDidMount(){
         this._isMounted = true;
         this.getLogin()
-        this.setState({Posts : this.props.Posts,info:this.props.Activite_info})
-        await this.AfficheAbonnement()
+        this.setState({info : this.props.route.params.Activite_info})
+        this.AfficheAbonnement()
+        await this.loadPosts();
     }
 
     AfficheAbonnement = () =>{
-        this.setState({abonnement : this.props.abonnement})
+        this.setState({abonnement : this.props.route.params.abonnement})
     }
     addPost = async () => {
         this.setState({loading : true})
 
-        await Axios.post('http://192.168.1.9:8080/post',{ createur_id : this.state.user_id , activite_id : this.props.activite_id , body : this.state.msg})
+        await Axios.post('http://192.168.1.9:8080/post',{ createur_id : this.state.user_id , activite_id : this.props.route.params.activite_id , body : this.state.msg})
         .then(res =>{
             if(res.data.POST == 'OK'){
                 ToastAndroid.show('Votre Poste a ete ajouter ', ToastAndroid.SHORT);  
@@ -60,7 +61,7 @@ export default class Journal extends React.Component{
         if (this._isMounted) {
             this.setState({loading : true})
             
-            await Axios.get(`http://192.168.1.9:8080/posts/activite/${this.props.activite_id}`).then( res =>{
+            await Axios.get(`http://192.168.1.9:8080/posts/activite/${this.props.route.params.activite_id}`).then( res =>{
                 
                     this.setState({Posts : res.data})
                 
@@ -84,22 +85,26 @@ export default class Journal extends React.Component{
 
 
     _handleRefresh = async ()=>{
-        this.setState({refreshing : true })
-        this.loadPosts()
-        this.setState({refreshing : false})
+        if(this._isMounted){
+            this.setState({refreshing : true })
+            await this.loadPosts()
+            this.setState({refreshing : false})
+            
+        }
     }
 
     goToComents = id =>{
         this.props.navigation.navigate('Commentaire',{post_id : id , abonnement : this.state.abonnement})
     }
     goToReactions = id =>{
+        console.log(id)
         this.props.navigation.navigate('Reaction',{post_id : id, abonnement : this.state.abonnement})
     }
 
 
     setDesAbonnement = async () =>{
         this.setState({loading : true})
-        await Axios.post("http://192.168.1.9:8080/activite/desabonnement",{user_id : this.state.user_id , activite_id : this.props.activite_id}).then(res=>{
+        await Axios.post("http://192.168.1.9:8080/activite/desabonnement",{user_id : this.state.user_id , activite_id : this.props.route.params.activite_id}).then(res=>{
             if(res.data.DELETE == "OK"){
                 if (this._isMounted) {    
                     this.setState({abonnement : false ,loading : false})
@@ -111,7 +116,7 @@ export default class Journal extends React.Component{
     }
     setAbonnement = async () =>{
         this.setState({loading : true})
-        await Axios.post("http://192.168.1.9:8080/activite/abonnement",{user_id : this.state.user_id , activite_id : this.props.activite_id}).then(res=>{
+        await Axios.post("http://192.168.1.9:8080/activite/abonnement",{user_id : this.state.user_id , activite_id : this.props.route.params.activite_id}).then(res=>{
             if(res.data.STATUS == "OK"){
                 if (this._isMounted) {    
                     this.setState({abonnement : true , loading : false})
@@ -122,8 +127,16 @@ export default class Journal extends React.Component{
         })
     }
 
+    ShowMembers = () =>{
+        this.props.navigation.navigate('Membres',{ Activite_info : this.props.route.params.Activite_info})
+    }
+    ShowGuide = () =>{
+        this.props.navigation.navigate('Guide',{ activite_id : this.props.route.params.Activite_info})
+    }
+
     render(){
         const mywidht = (Dimensions.get('window').width) - 40
+        const fullwidth = Dimensions.get('window').width
         const txtFiledWidht = mywidht - 85
         if(this.state.loading){
             return (
@@ -136,6 +149,24 @@ export default class Journal extends React.Component{
             return(
 
                 <SafeAreaView style={{ margin : 0 ,padding :0}}>
+                    <View style={{ flexDirection:"row",backgroundColor : "#fff"}}>
+                        <View style={{width : fullwidth/3 ,borderBottomColor: "#3f3d56" ,borderBottomWidth : 2 ,height : 45}}>
+                            <TouchableWithoutFeedback>
+                                <Text style={{ alignSelf: "center" , lineHeight :40}}>Journal</Text>
+                            </TouchableWithoutFeedback>
+                        </View>
+                        <View style={{width : fullwidth/3 ,borderBottomColor: "#cfcfcf" ,borderBottomWidth : 2 ,height : 45}}>
+                            <TouchableWithoutFeedback onPress={ ()=> this.ShowMembers()}>
+                                <Text style={{ alignSelf: "center" , lineHeight :40}}>Membres</Text>
+                            </TouchableWithoutFeedback>
+                        </View>
+                        <View style={{width : fullwidth/3 ,borderBottomColor: "#cfcfcf" ,borderBottomWidth : 2 ,height : 45}}>
+                            <TouchableWithoutFeedback  style={{width : fullwidth/3 ,borderBottomColor: "#cfcfcf" }} onPress={()=> this.ShowGuide()}>
+                                 <Text style={{ alignSelf: "center" , lineHeight :40}}> Guide</Text>
+                            </TouchableWithoutFeedback>
+                        </View>
+
+                    </View>
                 <FlatList
                     keyExtractor={item => item.post_id.toString()}
 
@@ -168,11 +199,11 @@ export default class Journal extends React.Component{
                             }}>
 
 
-                            <Image  source={{uri : "http://192.168.1.9:8080/uploads/images/covers/"+this.props.Activite_info.cover}} style={{width: '100%' ,resizeMode : 'cover', height:225 , borderRadius:5  , borderBottomLeftRadius : 0 , borderBottomRightRadius : 0}} />
+                            <Image  source={{uri : "http://192.168.1.9:8080/uploads/images/covers/"+this.state.info.cover}} style={{width: '100%' ,resizeMode : 'cover', height:225 , borderRadius:5  , borderBottomLeftRadius : 0 , borderBottomRightRadius : 0}} />
 
                             <View style={{padding: 10,paddingLeft : 25}}>
                                 <View style={{ flexDirection:"row"}}>
-                                    <Text style={{ fontWeight: 'bold', paddingTop : 10, fontSize: 20, textTransform:'capitalize', width :175 }}>{this.props.Activite_info.nom}</Text>
+                                    <Text style={{ fontWeight: 'bold', paddingTop : 10, fontSize: 20, textTransform:'capitalize', width :175 }}>{this.state.info.nom}</Text>
                                     {
                                         !this.state.abonnement ? (
                                             <TouchableOpacity onPress={() => this.setAbonnement() } style={{ width : 150 , height : 50 , alignItems :"center",  borderRadius: 7 , backgroundColor : '#fff', borderWidth : 2 ,paddingHorizontal: 20, borderColor : '#3f3d56' , padding : 3}} >
